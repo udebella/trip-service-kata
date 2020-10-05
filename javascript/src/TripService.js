@@ -4,9 +4,13 @@ import UserSession from './UserSession.js'
 import TripDAO from './TripDAO.js'
 
 class TripService {
+    constructor(userSession = UserSession) {
+        this.userSession = userSession;
+    }
+
     getTripsByUser(user) {
         let tripList = []
-        let loggedUser = UserSession.getLoggedUser()
+        let loggedUser = this.userSession.getLoggedUser()
         let isFriend = false
         if (loggedUser != null) {
             let friends = user.getFriends()
