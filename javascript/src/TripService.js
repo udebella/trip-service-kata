@@ -7,7 +7,7 @@ const DEFAULT_DEPENDENCIES = {
     findTripsByUser: TripDAO.findTripsByUser
 }
 
-const compose = (...functions) => arg => functions.reduce((acc, fn) => fn(acc), arg)
+const compose = (...functions) => arg => functions.reduce((acc, fn) => fn(acc, arg), arg)
 
 const ifConnected = loggedUser => {
     if (!loggedUser) {
@@ -17,13 +17,15 @@ const ifConnected = loggedUser => {
 }
 
 export function TripService({getLoggedUser, findTripsByUser} = DEFAULT_DEPENDENCIES) {
+    const retrieveTripsIfAuthorized = (loggedUser, user) => user
+        .getFriends()
+        .filter(friend => friend === loggedUser)
+        .flatMap(_ => findTripsByUser(user))
+
     return {
-        getTripsByUser: user => compose(
+        getTripsByUser: compose(
             getLoggedUser,
             ifConnected,
-            loggedUser => user
-                .getFriends()
-                .filter(friend => friend === loggedUser)
-                .flatMap(_ => findTripsByUser(user)))(user)
+            retrieveTripsIfAuthorized)
     }
 }
