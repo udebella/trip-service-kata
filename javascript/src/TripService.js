@@ -15,8 +15,8 @@ class TripService {
             throw new Error('User not logged in.')
         }
 
-        const friends = user.getFriends()
-        return friends
+        return user
+            .getFriends()
             .filter(friend => friend === loggedUser)
             .flatMap(_ => this.tripDao.findTripsByUser(user))
     }
