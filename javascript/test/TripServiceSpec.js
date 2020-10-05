@@ -10,15 +10,13 @@ const {expect} = chai
 describe('TripService', () => {
 
     it('should fail when given a null parameter', () => {
-        const userSession = {getLoggedUser: stub()}
-        const tripService = tripsFinder({userSession})
+        const tripService = tripsFinder({getLoggedUser: stub()})
 
         expect(() => tripService.getTripsByUser(null)).to.throw('User not logged in.')
     })
 
     it('should return empty list when connected user is not a friend', () => {
-        const userSession = {getLoggedUser: stub().returns(new User())}
-        const tripService = tripsFinder({userSession})
+        const tripService = tripsFinder({getLoggedUser: stub().returns(new User())})
 
         const tripList = tripService.getTripsByUser(new User())
 
@@ -27,9 +25,8 @@ describe('TripService', () => {
 
     it('should return trip list when connected user is a friend', () => {
         const connectedUser = new User();
-        const userSession = {getLoggedUser: stub().returns(connectedUser)}
         const tripDao = {findTripsByUser: stub().returns(['Paris'])}
-        const tripService = tripsFinder({userSession, tripDao})
+        const tripService = tripsFinder({getLoggedUser: stub().returns(connectedUser), tripDao})
 
         const tripList = tripService.getTripsByUser(new User([connectedUser]))
 
