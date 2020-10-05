@@ -2,6 +2,10 @@
 
 import UserSession from './UserSession.js'
 import TripDAO from './TripDAO.js'
+const DEFAULT_DEPENDENCIES = {
+    getLoggedUser: UserSession.getLoggedUser,
+    findTripsByUser: TripDAO.findTripsByUser
+}
 
 const ifConnected = (getLoggedUser) => ({
     then: callBack => {
@@ -13,7 +17,7 @@ const ifConnected = (getLoggedUser) => ({
     }
 })
 
-export function TripService({getLoggedUser = UserSession.getLoggedUser, findTripsByUser = TripDAO.findTripsByUser} = {}) {
+export function TripService({getLoggedUser, findTripsByUser} = DEFAULT_DEPENDENCIES) {
     return {
         getTripsByUser: user => ifConnected(getLoggedUser)
             .then(loggedUser => user
