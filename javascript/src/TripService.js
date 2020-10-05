@@ -12,7 +12,7 @@ export function TripService({getLoggedUser = UserSession.getLoggedUser, findTrip
         return loggedUser;
     }
 
-    function getTripsByUser(user) {
+    const getTripsByUser = user => {
         const loggedUser = failIfNotConnected();
 
         return user
