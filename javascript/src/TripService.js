@@ -10,12 +10,12 @@ class TripService {
     }
 
     getTripsByUser(user) {
-        let loggedUser = this.userSession.getLoggedUser()
+        const loggedUser = this.userSession.getLoggedUser()
         if (loggedUser == null) {
             throw new Error('User not logged in.')
         }
 
-        let friends = user.getFriends()
+        const friends = user.getFriends()
         const isFriend = friends.some(friend => friend === loggedUser)
         if (isFriend) {
             return this.tripDao.findTripsByUser(user)
