@@ -3,9 +3,9 @@
 import UserSession from './UserSession.js'
 import TripDAO from './TripDAO.js'
 
-export const tripsFinder = ({userSession = UserSession, tripDao = TripDAO} = {}) => {
+export const tripsFinder = ({userSession, tripDao = TripDAO, getLoggedUser = UserSession.getLoggedUser} = {}) => {
     function getTripsByUser(user) {
-        const loggedUser = userSession.getLoggedUser()
+        const loggedUser = userSession ? userSession.getLoggedUser() : getLoggedUser()
         if (!loggedUser) {
             throw new Error('User not logged in.')
         }
