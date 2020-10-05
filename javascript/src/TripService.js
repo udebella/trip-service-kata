@@ -7,7 +7,7 @@ const DEFAULT_DEPENDENCIES = {
     findTripsByUser: TripDAO.findTripsByUser
 }
 
-const ifConnected = (getLoggedUser) => ({
+const ifConnected = getLoggedUser => ({
     then: callBack => {
         const loggedUser = getLoggedUser()
         if (!loggedUser) {
