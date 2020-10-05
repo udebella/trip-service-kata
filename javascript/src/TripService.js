@@ -11,7 +11,7 @@ class TripService {
 
     getTripsByUser(user) {
         const loggedUser = this.userSession.getLoggedUser()
-        if (loggedUser == null) {
+        if (!loggedUser) {
             throw new Error('User not logged in.')
         }
 
