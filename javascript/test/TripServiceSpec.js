@@ -3,7 +3,7 @@
 import chai from 'chai'
 import sinon from 'sinon'
 import User from '../src/User.js'
-import {tripsFinder} from '../src/TripService.js'
+import {TripService} from '../src/TripService.js'
 
 const {stub} = sinon
 const {expect} = chai
@@ -15,7 +15,7 @@ describe('TripService', () => {
             getLoggedUser: stub(),
             findTripsByUser: stub(),
         }
-        tripService = tripsFinder(stubs)
+        tripService = new TripService(stubs)
     })
 
     it('should fail when given a null parameter', () => {

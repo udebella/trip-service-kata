@@ -3,8 +3,8 @@
 import UserSession from './UserSession.js'
 import TripDAO from './TripDAO.js'
 
-export const tripsFinder = ({getLoggedUser = UserSession.getLoggedUser, findTripsByUser = TripDAO.findTripsByUser} = {}) => {
-    function failIfNotConnected() {
+export function TripService({getLoggedUser = UserSession.getLoggedUser, findTripsByUser = TripDAO.findTripsByUser} = {}) {
+    const failIfNotConnected = () => {
         const loggedUser = getLoggedUser()
         if (!loggedUser) {
             throw new Error('User not logged in.')
