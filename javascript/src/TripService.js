@@ -3,7 +3,7 @@
 import UserSession from './UserSession.js'
 import TripDAO from './TripDAO.js'
 
-export const tripsFinder = ({tripDao = TripDAO, getLoggedUser = UserSession.getLoggedUser} = {}) => {
+export const tripsFinder = ({tripDao, getLoggedUser = UserSession.getLoggedUser, findTripsByUser = TripDAO.findTripsByUser} = {}) => {
     function getTripsByUser(user) {
         const loggedUser = getLoggedUser()
         if (!loggedUser) {
@@ -13,7 +13,7 @@ export const tripsFinder = ({tripDao = TripDAO, getLoggedUser = UserSession.getL
         return user
             .getFriends()
             .filter(friend => friend === loggedUser)
-            .flatMap(_ => tripDao.findTripsByUser(user))
+            .flatMap(_ => tripDao ? tripDao.findTripsByUser(user) : findTripsByUser(user))
     }
 
     return {
