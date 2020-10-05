@@ -4,6 +4,7 @@ import chai from 'chai'
 import sinon from 'sinon'
 import User from '../src/User.js'
 import {tripsFinder} from '../src/TripService.js'
+
 const {stub} = sinon
 const {expect} = chai
 
@@ -25,8 +26,10 @@ describe('TripService', () => {
 
     it('should return trip list when connected user is a friend', () => {
         const connectedUser = new User();
-        const tripDao = {findTripsByUser: stub().returns(['Paris'])}
-        const tripService = tripsFinder({getLoggedUser: stub().returns(connectedUser), tripDao})
+        const tripService = tripsFinder({
+            getLoggedUser: stub().returns(connectedUser),
+            findTripsByUser: stub().returns(['Paris'])
+        })
 
         const tripList = tripService.getTripsByUser(new User([connectedUser]))
 
