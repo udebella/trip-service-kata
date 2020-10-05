@@ -16,11 +16,9 @@ class TripService {
         }
 
         const friends = user.getFriends()
-        const isFriend = friends.some(friend => friend === loggedUser)
-        if (isFriend) {
-            return this.tripDao.findTripsByUser(user)
-        }
-        return []
+        return friends
+            .filter(friend => friend === loggedUser)
+            .flatMap(_ => this.tripDao.findTripsByUser(user))
     }
 }
 
