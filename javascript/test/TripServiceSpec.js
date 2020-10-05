@@ -25,4 +25,15 @@ describe('TripService', () => {
         expect(tripList).to.deep.equal([])
     })
 
+    it('should return trip list when connected user is a friend', () => {
+        const connectedUser = new User();
+        const userSession = {getLoggedUser: stub().returns(connectedUser)}
+        const tripDao = {findTripsByUser: stub().returns(['Paris'])}
+        const tripService = new TripService(userSession, tripDao)
+
+        const tripList = tripService.getTripsByUser(new User([connectedUser]))
+
+        expect(tripList).to.deep.equal(['Paris'])
+    })
+
 })

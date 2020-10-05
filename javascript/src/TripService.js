@@ -4,8 +4,9 @@ import UserSession from './UserSession.js'
 import TripDAO from './TripDAO.js'
 
 class TripService {
-    constructor(userSession = UserSession) {
+    constructor(userSession = UserSession, tripDao = TripDAO) {
         this.userSession = userSession;
+        this.tripDao = tripDao;
     }
 
     getTripsByUser(user) {
@@ -22,7 +23,7 @@ class TripService {
                 }
             }
             if (isFriend) {
-                tripList = TripDAO.findTripsByUser(user)
+                tripList = this.tripDao.findTripsByUser(user)
             }
             return tripList
         } else {
