@@ -4,22 +4,21 @@ import UserSession from './UserSession.js'
 import TripDAO from './TripDAO.js'
 
 export function TripService({getLoggedUser = UserSession.getLoggedUser, findTripsByUser = TripDAO.findTripsByUser} = {}) {
-    const failIfNotConnected = () => {
-        const loggedUser = getLoggedUser()
-        if (!loggedUser) {
-            throw new Error('User not logged in.')
+    const ifConnected = () => ({
+        then: callBack => {
+            const loggedUser = getLoggedUser()
+            if (!loggedUser) {
+                throw new Error('User not logged in.')
+            }
+            return callBack(loggedUser)
         }
-        return loggedUser;
-    }
+    })
 
-    const getTripsByUser = user => {
-        const loggedUser = failIfNotConnected()
-
-        return user
+    const getTripsByUser = user => ifConnected()
+        .then(loggedUser => user
             .getFriends()
             .filter(friend => friend === loggedUser)
-            .flatMap(_ => findTripsByUser(user))
-    }
+            .flatMap(_ => findTripsByUser(user)))
 
     return {
         getTripsByUser
